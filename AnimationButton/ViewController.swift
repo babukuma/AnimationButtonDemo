@@ -9,7 +9,7 @@
 import UIKit
 
 class ViewController: UIViewController {
-    @IBOutlet weak var animationButton: PlusButton!
+    @IBOutlet weak var plusButton: PlusButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,7 +22,7 @@ class ViewController: UIViewController {
     }
 
     @IBAction func onChangeType(_ sender: UIButton) {
-        animationButton.type = {
+        plusButton.type = {
             switch sender.tag {
             case 2:
                 return .close
@@ -30,6 +30,40 @@ class ViewController: UIViewController {
                 return .plus
             }
         }()
+    }
+
+    @IBAction func onChangeRotationDegree(_ sender: UISegmentedControl) {
+        plusButton.type = .plus
+
+        plusButton.rotateDegree = {
+            switch sender.selectedSegmentIndex {
+            case 1:
+                return Double.pi * 3.0 / 4.0
+            case 2:
+                return Double.pi * 5.0 / 4.0
+            case 3:
+                return Double.pi * 7.0 / 4.0
+            default:
+                return Double.pi / 4.0
+            }
+        }()
+    }
+    @IBAction func onChangeTimeFunction(_ sender: UISegmentedControl) {
+        plusButton.timeFunction = {
+            switch sender.selectedSegmentIndex {
+            case 1:
+                return CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+            case 2:
+                return CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+            case 3:
+                return CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+            default:
+                return nil
+            }
+        }()
+    }
+    @IBAction func onChangeDamping(_ sender: UISegmentedControl) {
+        plusButton.damping = CGFloat(sender.selectedSegmentIndex + 5)
     }
 }
 

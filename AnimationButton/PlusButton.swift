@@ -12,14 +12,10 @@ class PlusButton: UIButton {
     var plusLayer: CAShapeLayer! = CAShapeLayer()
 
     // MARK: - Initialize
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.initLayer()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        self.initLayer()
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        initLayer()
     }
 
     private func initLayer() {
@@ -55,15 +51,21 @@ class PlusButton: UIButton {
     }
 
     // MARK: - Animation
-    private let _rotateDegree = Double.pi / 4
+    var rotateDegree = Double.pi / 4
+    var timeFunction: CAMediaTimingFunction?
+    var damping: CGFloat = 5
     private let _duration = CFTimeInterval(0.2)
 
     private func rotateAnimation() {
-        let animation = CABasicAnimation(keyPath: "transform.rotation")
-        animation.fromValue = type == .plus ? _rotateDegree : 0.0
-        animation.toValue = type == .plus ? 0 : _rotateDegree
+        let animation = CASpringAnimation(keyPath: "transform.rotation")
+        animation.fromValue = type == .plus ? rotateDegree : 0.0
+        animation.toValue = type == .plus ? 0 : rotateDegree
         animation.duration = _duration
-        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+        animation.damping = damping
+        animation.duration = animation.settlingDuration
+        if let timeFunction = timeFunction {
+            animation.timingFunction = timeFunction
+        }
         animation.fillMode = kCAFillModeForwards
         animation.isRemovedOnCompletion = false
         plusLayer.add(animation, forKey: "transform.rotation")
