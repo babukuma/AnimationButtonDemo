@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  AnimationButton
 //
-//  Created by Gim Dohyoung on 2017/07/25.
+//  Created by Danny Gim on 2017/07/25.
 //  Copyright © 2017 Danny Gim. All rights reserved.
 //
 
